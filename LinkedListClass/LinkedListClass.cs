@@ -1,15 +1,11 @@
-﻿using System.Security;
-using System.Text;
-
-namespace DSLinkedList;
+﻿namespace DSLinkedList;
 
 /// <summary>
 /// Describes LinkedList data structure and implements CRUD functionality.
 /// </summary>
-public class LinkedListClass<T>
+public class LinkedList<T>
 {
     /// <summary>
-    /// Implement indexator.
     /// Allow to access to node through []:
     /// 1. var q = "name of LinkedList"[index];
     /// 2. "name of LinkedList"[index] = value;
@@ -29,9 +25,9 @@ public class LinkedListClass<T>
     /// Counter of the elements in LinkedList.
     /// </summary>
     /// <returns></returns>
-    public int CountElements()
+    public int Count()
     {
-        int count = 1;
+        int count = 0;
         
         Node<T> current = head;
 
@@ -48,11 +44,11 @@ public class LinkedListClass<T>
     /// If LinkedList is empty, node will be added in the first position.
     /// </summary>
     /// <param name="value"></param>
-    public void AddNode(T value)
+    public void Add(T value)
     {
         Node<T> node = new(value);
 
-        if (head == null)
+        if (head is null)
         {
             head = node;
             tail = node;
@@ -70,7 +66,7 @@ public class LinkedListClass<T>
     /// </summary>
     /// <param name="index"></param>
     /// <param name="value"></param>
-    public void AddNode(int index, T value)
+    public void Add(int index, T value)
     {
         Node<T> node = new(value);
 
@@ -82,7 +78,7 @@ public class LinkedListClass<T>
         {
             node.Next = head;
             head = node;
-            if (node.Next == null)
+            if (node.Next is null)
                 tail = node;
         }
         else
@@ -101,47 +97,10 @@ public class LinkedListClass<T>
     }
 
     /// <summary>
-    /// Removing a node by a value.
-    /// </summary>
-    /// <param name="value"></param>
-    public void DeleteNode(T value)
-    {
-        Node<T>? current = head;
-        Node<T>? previous = null;
-
-        while (current != null)
-        {
-            if (current.Value.Equals(value))
-            {
-                if (previous != null)
-                {
-                    previous.Next = current.Next;
-
-                    if (current.Next == null)
-                    {
-                        tail = previous;
-                    }
-                }
-                else
-                {
-                    head = head.Next;
-
-                    if (head == null)
-                    {
-                        tail = null;
-                    }
-                }
-            }
-            previous = current;
-            current = current.Next;
-        }
-    }
-
-    /// <summary>
     /// Delete a node by index.
     /// </summary>
     /// <param name="index"></param>
-    public void DeleteNodeByIndex(int index)
+    public void Delete(int index)
     {
         Node<T> current = head;
         Node<T> previuos = null;
