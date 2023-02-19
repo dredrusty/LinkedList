@@ -9,11 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LinkedListClass", "LinkedLi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DSLinkedListTests", "DSLinkedListTests\DSLinkedListTests.csproj", "{5D9EB85C-4EC2-4B1B-B027-2B88CB1A5AA0}"
 EndProject
-<<<<<<< HEAD
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{788861AB-6726-483B-BD76-4407DD351E18}"
-=======
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{788861AB-6726-483B-BD76-4407DD351E18}"
->>>>>>> 7515318 (VVCOM-2 <For review>)
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
