@@ -5,6 +5,9 @@
 /// </summary>
 public class LinkedList<T>
 {
+    private Node<T>? head;
+    private Node<T>? tail;
+
     /// <summary>
     /// Allow to access to node through []:
     /// 1. var q = "name of LinkedList"[index];
@@ -14,12 +17,9 @@ public class LinkedList<T>
     /// <returns></returns>
     public T? this[int i]
     {
-        get => Get(i).Value;
-        set => Get(i).Value = value;
+        get => Get(i);
+        set => Update(i, value);
     }
-
-    private Node<T>? head;
-    private Node<T>? tail;
 
     /// <summary>
     /// Counter of the elements in LinkedList.
@@ -29,7 +29,7 @@ public class LinkedList<T>
     {
         int count = 0;
         
-        Node<T> current = head;
+        Node<T>? current = head;
 
         while (current.Next != null)
         {
@@ -46,7 +46,7 @@ public class LinkedList<T>
     /// <param name="value"></param>
     public void Add(T value)
     {
-        Node<T> node = new(value);
+        Node<T>? node = new(value);
 
         if (head is null)
         {
@@ -70,8 +70,8 @@ public class LinkedList<T>
     {
         Node<T> node = new(value);
 
-        Node<T> current = head;
-        Node<T> previuos = null;
+        Node<T>? current = head;
+        Node<T>? previuos = null;
         int counter = 0;
 
         if (index == 0)
@@ -102,8 +102,8 @@ public class LinkedList<T>
     /// <param name="index"></param>
     public void Delete(int index)
     {
-        Node<T> current = head;
-        Node<T> previuos = null;
+        Node<T>? current = head;
+        Node<T>? previuos = null;
         int counter = 0;
 
         while (counter != index)
@@ -123,11 +123,11 @@ public class LinkedList<T>
     /// </summary>
     /// <param name="index"></param>
     /// <returns></returns>
-    public Node<T> Get(int index)
+    public T Get(int index)
     {
         var counter = 0;
 
-        Node<T> node = head;
+        Node<T>? node = head;
 
         while (counter != index)
         {
@@ -135,7 +135,7 @@ public class LinkedList<T>
             counter++;
         }
 
-        return node;
+        return node.Value;
     }
 
     /// <summary>
@@ -147,7 +147,7 @@ public class LinkedList<T>
     {
         var counter = 0;
 
-        Node<T> node = head;
+        Node<T>? node = head;
 
         while (counter != index)
         {
