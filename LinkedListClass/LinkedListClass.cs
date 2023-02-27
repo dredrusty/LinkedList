@@ -240,6 +240,11 @@ public class LinkedListClass<T> : IEnumerable<T>
         throw new NotImplementedException();
     }
 
+    public int CompareTo(Node<T>? other)
+    {
+        return Value.CompareTo(other.Value);
+    }
+
     #region
     /// <summary>
     /// Describes an element of the data structure LinkedList.
@@ -333,4 +338,3 @@ public class LinkedListClass<T> : IEnumerable<T>
     }
     #endregion
 }
-
