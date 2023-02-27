@@ -1,9 +1,14 @@
-﻿namespace DSLinkedList;
+﻿using System.Collections;
+using System.Text;
+
+
+namespace DSLinkedList;
 
 /// <summary>
 /// Describes LinkedList data structure and implements CRUD functionality.
 /// </summary>
 public class LinkedList<T>
+    where T : IComparable<T>
 {
     private Node<T>? head;
     private Node<T>? tail;
@@ -156,4 +161,143 @@ public class LinkedList<T>
         }
         node.Value = value;
     }
+
+    /// <summary>
+    /// Display LinkedList.
+    /// </summary>
+    /// <returns></returns>
+    public override string ToString()
+    {
+        Node<T>? node = head;
+        StringBuilder tmp = new();
+
+        foreach (var item in this)
+        {
+            tmp.Append(node.Value);
+            tmp.Append(' ');
+            node = node.Next;
+        }
+
+        string result = tmp.ToString();
+
+        return result;
+    }
+
+    /// <summary>
+    /// Method from IEnumerable interface that enables to use foreach.
+    /// </summary>
+    /// <returns></returns>
+    public IEnumerator<T> GetEnumerator()
+    {
+        Node<T> node = head;
+
+        while (node.Next is not null)
+        {
+            yield return node.Value;
+            node = node.Next;
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    public int CompareTo(Node<T>? other)
+    {
+        return Value.CompareTo(other.Value);
+    }
+
+    #region
+    /// <summary>
+    /// Describes an element of the data structure LinkedList.
+    /// Generics are used.
+    /// </summary>
+    public class Node<T> : IComparable<Node<T>>
+        where T : IComparable<T>
+    {
+        public T? Value { get; set; }
+        public Node<T>? Next { get; set; }
+
+        public Node(T value)
+        {
+            Value = value;
+        }
+
+        /// <summary>
+        /// Method that compares given object with the calling Fraction's object by value.
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object? obj)
+        {
+            if (obj is not Node<T>)
+                return false;
+            else
+            {
+                Node<T> node = (Node<T>)obj;
+                if (Value.CompareTo(node.Value) == 0)
+                    return true;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Because of overrided Equals(object? obj).
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode() =>
+            HashCode.Combine(Value);
+
+        /// <summary>
+        /// Allow to use method Sort.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
+        public int CompareTo(Node<T>? other)
+        {
+            return Value.CompareTo(other.Value);
+        }
+
+        public static bool operator ==(Node<T> node1, Node<T> node2)
+        {
+            if (node1.Value.CompareTo(node2.Value) == 0)
+                return true;
+            return false;
+        }
+
+        public static bool operator !=(Node<T> node1, Node<T> node2) =>
+            !(node1 == node2);
+
+        public static bool operator <(Node<T> node1, Node<T> node2)
+        {
+            if (node1.Value.CompareTo(node2.Value) == -1)
+                return true;
+            return false;
+        }
+
+        public static bool operator >(Node<T> node1, Node<T> node2)
+        {
+            if (node1.Value.CompareTo(node2.Value) == 1)
+                return true;
+            return false;
+        }
+
+        public static bool operator <=(Node<T> node1, Node<T> node2)
+        {
+            if ((node1.Value.CompareTo(node2.Value) == 0) || 
+                (node1.Value.CompareTo(node2.Value) == -1))
+                return true; 
+            return false;
+        }
+
+        public static bool operator >=(Node<T> node1, Node<T> node2)
+        {
+            if ((node1.Value.CompareTo(node2.Value) == 0) ||
+                (node1.Value.CompareTo(node2.Value) == 1))
+                return true;
+            return false;
+        }
+    }
+    #endregion
 }
