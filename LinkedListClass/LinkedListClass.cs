@@ -77,6 +77,7 @@ public class LinkedList<T> : IList<T>
     /// <summary>
     /// Adding a new node in the end of the LinkedList.
     /// If LinkedList is empty, node will be added in the first position.
+    /// Useful for filling out of the LinkdList.
     /// </summary>
     /// <param name="value"></param>
     public void Add(T value)
@@ -92,71 +93,6 @@ public class LinkedList<T> : IList<T>
         {
             tail.Next = node;
             tail = node;
-        }
-    }
-
-    /// <summary>
-    /// Adding a new node in a particulare place by index.
-    /// If index == 0, the node will be added in the first position.
-    /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
-    public void Add(int index, T value)
-    {
-        Node<T> node = new(value);
-
-        Node<T>? current = head;
-        Node<T>? previuos = null;
-        int counter = 0;
-
-        if (index == 0)
-        {
-            node.Next = head;
-            head = node;
-            if (node.Next is null)
-                tail = node;
-        }
-        else
-        {
-            while (counter != index)
-            {
-                previuos = current;
-                current = current.Next;
-
-                counter++;
-            }
-
-            previuos.Next = node;
-            node.Next = current;
-        }
-    }
-
-    /// <summary>
-    /// Delete a node from the LinkedList according index provided as parametr.
-    /// </summary>
-    /// <param name="index"></param>
-    public void Delete(int index)
-    {
-        Node<T>? current = head;
-        Node<T>? previuos = null;
-        int counter = 0;
-
-        while (counter != index)
-        {
-            previuos = current;
-            current = current.Next;
-
-            counter++;
-        }
-
-        if (previuos is null)
-        {
-            head = current.Next;
-        }
-        else
-        {
-            current = current.Next;
-            previuos.Next = current;
         }
     }
 
@@ -243,7 +179,9 @@ public class LinkedList<T> : IList<T>
             for (int i = 0; i < Count(); i++)
             {
                 if (temp.Value.Equals(item))
+
                     return i;
+
                 temp = temp.Next;
             }
             return -1;
