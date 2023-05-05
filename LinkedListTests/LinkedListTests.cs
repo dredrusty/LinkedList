@@ -1,7 +1,7 @@
 using System;
+using System.Collections;
 using NUnit.Framework;
 using VV.DataStructure.LinkedList;
-using IEnumerable = System.Collections.Generic.IEnumerable<object[]>;
 
 namespace LinkedListTests
 {
@@ -18,7 +18,8 @@ namespace LinkedListTests
         /// <param name="expected"></param>
         [TestCaseSource(nameof(CanCount_Data))]
         [Test]
-        public void CanCount(LinkedList<int> list,int expected)
+        public void CanCount<T>(LinkedList<T> list,int expected)
+            where T : IComparable<T>
         {
             //Arrange
             
@@ -35,12 +36,13 @@ namespace LinkedListTests
         /// <param name="array"></param>
         [TestCaseSource(nameof(ConstructorLinkedListWhenParametrIsCollection_Data))]
         [Test]
-        public void ConstructorLinkedListWhenParametrIsCollection(int[] array)
+        public void ConstructorLinkedListWhenParametrIsCollection<T>(T[] array)
+            where T : IComparable<T>
         {
             //Arrange
 
             //Act
-            LinkedList<int> list = new(array);
+            LinkedList<T> list = new(array);
 
            //Assert
             CollectionAssert.AreEqual(array, list);
@@ -52,7 +54,7 @@ namespace LinkedListTests
         /// <param name="array"></param>
         [TestCaseSource(nameof(ConstructorLinkedListWhenParametrIsCollectionIsNullException_Data))]
         [Test]
-        public void ConstructorLinkedListWhenParametrIsCollectionIsNullException(int[] array)
+        public void ConstructorLinkedListWhenParametrIsCollectionIsNullException(int [] array)
         {
             //Arrange
             LinkedList<int> list = new();
@@ -71,7 +73,8 @@ namespace LinkedListTests
         /// <param name="list"></param>
         [TestCaseSource(nameof(IsReadonlyByDefault_Data))]
         [Test]
-        public void IsReadonlyByDefault(LinkedList<int> list)
+        public void IsReadonlyByDefault<T>(LinkedList<T> list)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -83,60 +86,46 @@ namespace LinkedListTests
         }
 
         /// <summary>
-        /// Test for this[value].
+        /// Test for Get(index) method.
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
-        /// <param name="indexGet"></param>
-        /// <param name="indexSet"></param>
-        /// <param name="valueSet"></param>
-        /// <param name="expectedGet"></param>
-        /// <param name="expectedSet"></param>
-        [TestCaseSource(nameof(GetOrSetByIndex_Data))]
+        /// <param name="index"></param>
+        /// <param name="expectedValue"></param>
+        [TestCaseSource(nameof(GetByIndex_Data))]
         [Test]
-        public void GetOrSetByIndex(LinkedList<int> list, int indexGet, int indexSet, int valueSet, int expectedGet, int expectedSet)
+        public void GetByIndex<T>(LinkedList<T> list, int index, T expectedValue)
+            where T : IComparable<T>
         {
             //Arrange
 
             //Act
-            var resultGet = list[indexGet];
-
-            list[indexSet] = valueSet;
+            var result = list.Get(index);
 
             //Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(expectedGet, Is.EqualTo(resultGet));
-                Assert.That(expectedSet, Is.EqualTo(list[indexSet]));
-            });
+            Assert.That(expectedValue, Is.EqualTo(result));
         }
 
         /// <summary>
-        /// Test for throwing ArgumentOutOfRangeException, when index out of range.
+        /// Test for throwing ArgumentOutOfRangeException in Get(index) method, when index out of range.
         /// </summary>
+        /// <typeparam name="T"></typeparam>
         /// <param name="list"></param>
-        /// <param name="indexGet"></param>
-        /// <param name="indexSet"></param>
-        /// <param name="valueSet"></param>
-        [TestCaseSource(nameof(GetOrSetByIndexThrowsArgumentOutOfRangeException_Data))]
+        /// <param name="index"></param>
+        [TestCaseSource(nameof(GetByIndexThrowsArgumentOutOfRangeException_Data))]
         [Test]
-        public void GetOrSetByIndexThrowsArgumentOutOfRangeException(LinkedList<int> list, int indexGet, int indexSet, int valueSet)
+        public void GetByIndexThrowsArgumentOutOfRangeException<T>(LinkedList<T> list, int index)
+            where T : IComparable<T>
         {
             //Arrange
-            int resultGet;
+            T resultGet;
 
             //Act
-            var exceptionGet = Assert.Throws<ArgumentOutOfRangeException>(() 
-                => resultGet = list[indexGet]);
-
-            var exceptionSet = Assert.Throws<ArgumentOutOfRangeException>(()
-                => list[indexSet] = valueSet);
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(() 
+                => resultGet = list[index]);
 
             //Assert
-            Assert.Multiple(() =>
-            {
-                Assert.That(exceptionGet.Message, Is.EqualTo("You are trying to get non-existent element. (Parameter 'index')"));
-                Assert.That(exceptionSet.Message, Is.EqualTo("You are trying to get non-existent element. (Parameter 'index')"));
-            });
+            Assert.That(exception.Message, Is.EqualTo("You are trying to get non-existent element. (Parameter 'index')"));
         }
 
         /// <summary>
@@ -147,7 +136,8 @@ namespace LinkedListTests
         /// <param name="expected"></param>
         [TestCaseSource(nameof(CanAdd_Data))]
         [Test]
-        public void CanAdd(LinkedList<int> list, int value, int expected)
+        public void CanAdd<T>(LinkedList<T> list, T value, T expected)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -167,7 +157,8 @@ namespace LinkedListTests
         /// <param name="expected"></param>
         [TestCaseSource(nameof(CanUpdate_Data))]
         [Test]
-        public void CanUpdate(LinkedList<int> list, int index, int value, int expected)
+        public void CanUpdate<T>(LinkedList<T> list, int index, T value, T expected)
+            where T: IComparable<T>
         {
             //Arrange
 
@@ -186,7 +177,8 @@ namespace LinkedListTests
         /// <param name="value"></param>
         [TestCaseSource(nameof(CanUpdateThrowsArgumentOutOfRangeException_Data))]
         [Test]
-        public void CanUpdateThrowsArgumentOutOfRangeException(LinkedList<int> list, int index, int value)
+        public void CanUpdateThrowsArgumentOutOfRangeException<T>(LinkedList<T> list, int index, T value)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -205,7 +197,8 @@ namespace LinkedListTests
         /// <param name="expected"></param>
         [TestCaseSource(nameof(CanToString_Data))]
         [Test]
-        public void CanTostring(LinkedList<int> list, string expected)
+        public void CanTostring<T>(LinkedList<T> list, string expected)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -224,7 +217,8 @@ namespace LinkedListTests
         /// <param name="expected"></param>
         [TestCaseSource(nameof(CanIndexOf_Data))]
         [Test]
-        public void CanIndexOf(LinkedList<int> list, int item, int expected)
+        public void CanIndexOf<T>(LinkedList<T> list, T item, int expected)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -244,7 +238,8 @@ namespace LinkedListTests
         /// <param name="expectedItem"></param>
         [TestCaseSource(nameof(CanInsert_Data))]
         [Test]
-        public void CanInsert(LinkedList<int> list, int index, int item, int expectedItem)
+        public void CanInsert<T>(LinkedList<T> list, int index, T item, T expectedItem)
+            where T : IComparable<T>
         {
             //Arrange
             var expectedCount = list.Count + 1;
@@ -269,7 +264,8 @@ namespace LinkedListTests
         /// <param name="expectedCount"></param>
         [TestCaseSource(nameof(CanRemoveAt_Data))]
         [Test]
-        public void CanRemoveAt(LinkedList<int> list, int index, int expectedItem, int expectedCount)
+        public void CanRemoveAt<T>(LinkedList<T> list, int index, T expectedItem, int expectedCount)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -299,7 +295,8 @@ namespace LinkedListTests
         /// <param name="index"></param>
         [TestCaseSource(nameof(CanRemoveAtThrowsArgumentOutOfRangeException_Data))]
         [Test]
-        public void CanRemoveAtThrowsArgumentOutOfRangeException(LinkedList<int> list, int index)
+        public void CanRemoveAtThrowsArgumentOutOfRangeException<T>(LinkedList<T> list, int index)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -318,7 +315,8 @@ namespace LinkedListTests
         /// <param name="expectedCount"></param>
         [TestCaseSource(nameof(CanClear_Data))]
         [Test]
-        public void CanClear(LinkedList<int> list, int expectedCount)
+        public void CanClear<T>(LinkedList<T> list, int expectedCount)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -335,7 +333,8 @@ namespace LinkedListTests
         /// <param name="list"></param>
         [TestCaseSource(nameof(CanClearThrowsArgumentOutOfRangeExeptionList_Data))]
         [Test]
-        public void CanClearThrowsArgumentOutOfRangeExeptionList(LinkedList<int> list)
+        public void CanClearThrowsArgumentOutOfRangeExeptionList<T>(LinkedList<T> list)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -354,7 +353,8 @@ namespace LinkedListTests
         /// <param name="expectedResult"></param>
         [TestCaseSource(nameof(IsContains_Data))]
         [Test]
-        public void IsContains(LinkedList<int> list, int value, bool expectedResult)
+        public void IsContains<T>(LinkedList<T> list, T value, bool expectedResult)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -373,10 +373,11 @@ namespace LinkedListTests
         /// <param name="expectedResult"></param>
         [TestCaseSource(nameof(CanCopyTo_Data))]
         [Test]
-        public void CanCopyTo(LinkedList<int> list, int arrayIndex, int[] expectedResult)
+        public void CanCopyTo<T>(LinkedList<T> list, int arrayIndex, T[] expectedResult)
+            where T : IComparable<T>
         {
             //Arrange
-            int[] array = new int[10];
+            T[] array = new T[10];
 
             //Act
             list.CopyTo(array, arrayIndex);
@@ -393,10 +394,11 @@ namespace LinkedListTests
         /// <param name="arrayIndex"></param>
         [TestCaseSource(nameof(CopyToThrowsArgumentOutOfRangeException_Data))]
         [Test]
-        public void CopyToThrowsArgumentOutOfRangeException(LinkedList<int> list, int arrayIndex)
+        public void CopyToThrowsArgumentOutOfRangeException<T>(LinkedList<T> list, int arrayIndex)
+            where T : IComparable<T>
         {
             //Arrange
-            int[] array = new int[10];
+            T[] array = new T[10];
 
             //Act
             var exception = Assert.Throws<ArgumentOutOfRangeException>(() 
@@ -414,7 +416,8 @@ namespace LinkedListTests
         /// <param name="expectedResult"></param>
         [TestCaseSource(nameof(IsRemove_Data))]
         [Test]
-        public void IsRemove(LinkedList<int> list, int value, bool expectedResult)
+        public void IsRemove<T>(LinkedList<T> list, T value, bool expectedResult)
+            where T : IComparable<T>
         {
             //Arrange
 
@@ -432,13 +435,14 @@ namespace LinkedListTests
         /// <param name="expected"></param>
         [TestCaseSource(nameof(CanGetEnumeratorCreateForeach_Data))]
         [Test]
-        public void CanGetEnumeratorCreateForeach(LinkedList<int> list, int expected)
+        public void CanGetEnumeratorCreateForeach<T>(LinkedList<T> list, int expected)
+            where T : IComparable<T>
         {
             //Arrange
             int check = 0;
 
             //Act
-            foreach (int item in list)
+            foreach (T item in list)
             { check++; }
 
 
@@ -451,13 +455,15 @@ namespace LinkedListTests
             yield return new object[] { new LinkedList<int>(){ 1,2 }, 2 };
             yield return new object[] { new LinkedList<int>() { }, 0 };
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 5 };
+            yield return new object[] { new LinkedList<string>() { "dd", "rf", "dfer", "dfd", "dfdss" }, 5 };
         }
 
         private static IEnumerable ConstructorLinkedListWhenParametrIsCollection_Data()
         {
             yield return new object[] { new int[] { 1, 2 } };
             yield return new object[] { Array.Empty<int>() };
-            yield return new object[] {new int[] { 1, 2, 5, 0, 8 } };
+            yield return new object[] { new int[] { 1, 2, 5, 0, 8 } };
+            yield return new object[] { new string[] { "rgrt", "trhty", "DFbee" } };
         }
 
         private static IEnumerable ConstructorLinkedListWhenParametrIsCollectionIsNullException_Data()
@@ -469,28 +475,28 @@ namespace LinkedListTests
         {
             yield return new object[] { new LinkedList<int>() { 1, 2 } };
             yield return new object[] { new LinkedList<int>() { } };
-            yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 } };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee" } };
         }
 
-        private static IEnumerable GetOrSetByIndex_Data()
+        private static IEnumerable GetByIndex_Data()
         {
-            yield return new object[] { new LinkedList<int>() { 1, 2 }, 0, 1, 8, 1, 8 };
-            yield return new object[] { new LinkedList<int>() {5, -8, 11, 7 }, 1, 3, 8, -8, 8 };
-            yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 4, 1, 8, 8, 8 };
+            yield return new object[] { new LinkedList<int>() { 1, 2 }, 0, 1 };
+            yield return new object[] { new LinkedList<int>() {5, -8, 11, 7 }, 1, -8 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 3, "8" };
         }
 
-        private static IEnumerable GetOrSetByIndexThrowsArgumentOutOfRangeException_Data()
+        private static IEnumerable GetByIndexThrowsArgumentOutOfRangeException_Data()
         {
-            yield return new object[] { new LinkedList<int>() { 1, 2 }, 3, 2, 8 };
-            yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, -1, 8, 8 };
-            yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 10, -1, 8 };
+            yield return new object[] { new LinkedList<int>() { 1, 2 }, 3 };
+            yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, -1 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 10 };
         }
 
         private static IEnumerable CanAdd_Data()
         {
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 5, 5 };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 11, 11 };
-            yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 8, 8 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, "8", "8" };
             yield return new object[] { new LinkedList<int>() { }, 4, 4 };
         }
         
@@ -498,13 +504,13 @@ namespace LinkedListTests
         {
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 0, 14 , 14 };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 1, 11, 11 };
-            yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 4, 2, 2 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 3, "2", "2" };
         }
 
         private static IEnumerable CanUpdateThrowsArgumentOutOfRangeException_Data()
         {
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 5, 14 };
-            yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, -5, 11};
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, -5, "yth"};
         }
 
         private static IEnumerable CanToString_Data()
@@ -512,12 +518,13 @@ namespace LinkedListTests
             yield return new object[] { new LinkedList<int>() { 1, 2 }, "1 2" };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, "5 -8 11 7" };
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, "1 2 5 0 8" };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, "rgrt trhty DFbee 8" };
         }
 
         private static IEnumerable CanIndexOf_Data()
         {
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 5, -1 };
-            yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 11, 2 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, "DFbee", 2 };
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 8, 4 };
             yield return new object[] { new LinkedList<int>() { }, 5, -1 };
         }
@@ -527,6 +534,7 @@ namespace LinkedListTests
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 2, -1, -1};
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 0, 11, 11};
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 3, 15, 15};
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 1, " ", " " };
         }
 
         private static IEnumerable CanRemoveAt_Data()
@@ -534,12 +542,14 @@ namespace LinkedListTests
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 0, 2, 1 };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 3, 11, 3 };
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 2, 0, 4 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 1, "DFbee", 3 };
         }
 
         private static IEnumerable CanRemoveAtThrowsArgumentOutOfRangeException_Data()
         {
             yield return new object[] { new LinkedList<int>() { 1, 2 }, -5 };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 11 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 8 };
         }
 
         private static IEnumerable CanClear_Data()
@@ -547,11 +557,13 @@ namespace LinkedListTests
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 0 };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 0 };
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 0 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 0 };
         }
 
         private static IEnumerable CanClearThrowsArgumentOutOfRangeExeptionList_Data()
         {
             yield return new object[] { new LinkedList<int>() { } };
+            yield return new object[] { new LinkedList<string>() { } };
         }
 
         private static IEnumerable IsContains_Data()
@@ -559,19 +571,21 @@ namespace LinkedListTests
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 2, true };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, -8, true };
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 22, false };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, "rggth", false};
         }
 
         private static IEnumerable CanCopyTo_Data()
         {
             yield return new object[] { new LinkedList<int>() { 1, 3 }, 0, new int[]{ 1, 3, 0, 0, 0, 0, 0, 0, 0, 0 } };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 3, new int[] { 0, 0, 0, 5, -8, 11, 7, 0, 0, 0 } };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 6, new string[] { null!, null!, null!, null!, null!, null!, "rgrt", "trhty", "DFbee", "8" } };
         }
 
         private static IEnumerable CopyToThrowsArgumentOutOfRangeException_Data()
         {
             yield return new object[] { new LinkedList<int>() { 1, 3, 4, 24, 7 }, 6 };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, -3 };
-            yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 10 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 10 };
         }
 
         private static IEnumerable IsRemove_Data()
@@ -579,6 +593,7 @@ namespace LinkedListTests
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 1, true };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 5, true };
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 11, false };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, "8", true };
         }
 
         private static IEnumerable CanGetEnumeratorCreateForeach_Data()
@@ -586,6 +601,7 @@ namespace LinkedListTests
             yield return new object[] { new LinkedList<int>() { 1, 2 }, 2 };
             yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 4 };
             yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 5 };
+            yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 4 };
         }
     }
 }
