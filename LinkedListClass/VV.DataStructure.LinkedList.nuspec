@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>VV.DataStructures.LinkedList</id>
+    <version></version>
+    <authors>Viktar Batvinka</authors>
+    <description>This is a C# class library for working with LinkedList data structure.</description>
+    <projectUrl>https://bitbucket.org/dredrusty_/dslinkedlist/src/master/</projectUrl>
+    <dependencies>
+      <group targetFramework="net7.0" />
+    </dependencies>
+  </metadata>
+</package>
