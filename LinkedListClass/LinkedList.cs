@@ -237,7 +237,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
-
+        
         if(index < 0 || index >= Count)
             throw new ArgumentOutOfRangeException(nameof(index), LinkedListRes.ArgumentOutOfRangeExceptionText);
         
