@@ -15,6 +15,11 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     internal LinkedListNode<TValue>? head;
     private LinkedListNode<TValue>? tail;
 
+    internal LinkedListNode<TValue> HeadForTest()
+    {
+        return head!;
+    }
+
     /// <summary>
     /// Default empty constructor.
     /// </summary>
