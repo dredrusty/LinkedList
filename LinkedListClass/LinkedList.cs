@@ -12,13 +12,8 @@ namespace VV.DataStructure.LinkedList;
 public class LinkedList<TValue> : IList<TValue>, ICloneable
     where TValue : IComparable<TValue>
 {
-    private LinkedListNode<TValue>? head;
+    internal LinkedListNode<TValue>? head;
     private LinkedListNode<TValue>? tail;
-
-    internal LinkedListNode<TValue> HeadForTest()
-    {
-        return head!;
-    }
 
     /// <summary>
     /// Default empty constructor.
@@ -29,10 +24,10 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     }
 
     /// <summary>
-    /// Create an instance from given IEnumerable collection.
+    /// Creates an instance from given IEnumerable collection.
     /// </summary>
     /// <param name="collection">any IEnumerable collection from which a new LinkedList will be created.</param>
-    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentNullException">Will be thrown if collection is null.</exception>
     public LinkedList(IEnumerable<TValue> collection) 
     {
         if (collection is null) 
@@ -88,6 +83,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// </summary>
     /// <param name="index">the index of the element whose value is to be found</param>
     /// <returns>Returns value of the element corresponding to the specified index.</returns>
+    /// <exception cref="ArgumentOutOfRangeException">Index can not be negative or greater than Count-1.</exception>
     public TValue? Get(int index)
     {
         var counter = 0;
@@ -113,7 +109,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// Adds the item in the end of LinkedList. 
     /// </summary>
     /// <param name="item">the value of the element to be added</param>
-    /// <exception cref="InvalidOperationException"></exception>    
+    /// <exception cref="InvalidOperationException">If IsReadOnly is true, you are not allow to change this LinkedList.</exception>    
     public void Add(TValue item)
     {
         if (IsReadOnly)
@@ -138,6 +134,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// </summary>
     /// <param name="index">the index of the element whose value is to be changed</param>
     /// <param name="value">new value for element</param>
+    /// <exception cref="InvalidOperationException">If IsReadOnly is true, you are not allow to change this LinkedList.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Index can not be negative or greater than Count-1.</exception>
     public void Update(int index, TValue value)
     {
         if (IsReadOnly)
@@ -231,8 +229,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// </summary>
     /// <param name="index">the index where the new element should be inserted</param>
     /// <param name="item">the value of the inserted item</param>
-    /// <exception cref="InvalidOperationException"></exception>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="InvalidOperationException">If IsReadOnly is true, you are not allow to change this LinkedList.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Index can not be negative or greater than Count-1.</exception>
     public void Insert(int index, TValue item)
     {
         if (IsReadOnly)
@@ -275,8 +273,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// Removes the LinkedList item at the specified index.
     /// </summary>
     /// <param name="index">index of the item to be removed</param>
-    /// <exception cref="InvalidOperationException"></exception>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="InvalidOperationException">If IsReadOnly is true, you are not allow to change this LinkedList.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Index can not be negative or greater than Count-1.</exception>
     public void RemoveAt(int index)
     {
         if (IsReadOnly)
@@ -315,7 +313,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <summary>
     /// Removes all items from the LinkedList.
     /// </summary>
-    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="InvalidOperationException">If IsReadOnly is true, you are not allow to change this LinkedList.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">Index can not be negative or greater than Count-1.</exception>
     public void Clear()
     {
         if (IsReadOnly)
@@ -356,7 +355,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// </summary>
     /// <param name="array">the array to which the LinkedList is copied</param>
     /// <param name="arrayIndex">index of the array where the first element of LinkedList will be copied</param>
-    /// <exception cref="ArgumentOutOfRangeException"></exception>
+    /// <exception cref="ArgumentOutOfRangeException">The index cannot be negative or greater than the length of array-1. The number of elements of the copied LinkedList cannot exceed the capacity of the array.</exception>
     public void CopyTo(TValue[] array, int arrayIndex)
     {
         if ((Count > array.Length - arrayIndex) 
@@ -376,7 +375,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <param name="item">the value of the item to be removed</param>
     /// <returns>true, if item was successfully removed from LinkedList; otherwise, false.
     /// The method also returns false, if item is not found in the LinkedList.</returns>
-    /// <exception cref="InvalidOperationException"></exception>
+    /// <exception cref="InvalidOperationException">If IsReadOnly is true, you are not allow to change this LinkedList.</exception>
     public bool Remove(TValue item)
     {
         if (IsReadOnly)

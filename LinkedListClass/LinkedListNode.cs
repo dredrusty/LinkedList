@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("VV.DataStructure.LinkedList.Tests")]
 
 namespace VV.DataStructure.LinkedList;
 
@@ -40,13 +37,15 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     {
         if (obj is null)
             return false;
-        else
-        {
-            LinkedListNode<TValue> node = (LinkedListNode<TValue>)obj;
+        
+        LinkedListNode<TValue> node = (LinkedListNode<TValue>)obj;
+
+        if (obj is not LinkedListNode<TValue>)
+            return false;
+
             if (Value!.CompareTo(node.Value) == 0)
                 return true;
             return false;
-        }
     }
 
     /// <summary>
@@ -78,7 +77,7 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
-    /// <returns>True, if Nodes are not equal; otherwise, false.</returns>
+    /// <returns>true, if Nodes are not equal; otherwise, false.</returns>
     public static bool operator !=(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2) =>
         !(node1 == node2);
 
@@ -87,7 +86,7 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
-    /// <returns>True, if the first Node less than the second one; otherwise, false.</returns>
+    /// <returns>true, if the left Node less than the right one; otherwise, false.</returns>
     public static bool operator <(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
     {
         if (node1.Value!.CompareTo(node2.Value) < 0)
@@ -100,7 +99,7 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
-    /// <returns>True, if the first Node greater than the second one; otherwise, false.</returns>
+    /// <returns>true, if the left Node greater than the right one; otherwise, false.</returns>
     public static bool operator >(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
     {
         if (node1.Value!.CompareTo(node2.Value) > 0)
@@ -113,7 +112,7 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
-    /// <returns>True, if the first Node less than or equal to the second one; otherwise, false.</returns>
+    /// <returns>true, if the left Node less than or equal to the right one; otherwise, false.</returns>
     public static bool operator <=(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
     {
         if ((node1.Value!.CompareTo(node2.Value) == 0) ||
@@ -127,7 +126,7 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
-    /// <returns>True, if the first Node greater than or equal to the second one; otherwise, false.</returns>
+    /// <returns>true, if the left Node greater than or equal to the right one; otherwise, false.</returns>
     public static bool operator >=(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
     {
         if ((node1.Value!.CompareTo(node2.Value) == 0) ||

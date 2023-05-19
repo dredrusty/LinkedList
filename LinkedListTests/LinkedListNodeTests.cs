@@ -12,7 +12,7 @@ namespace LinkedListTests
     /// </summary>
     [TestFixture]
 internal class NodeTests
-    {
+{
         /// <summary>
         /// Test for creating the Node.
         /// </summary>
@@ -46,7 +46,7 @@ internal class NodeTests
         //Arrange
 
         //Act
-        LinkedListNode<T> node = list.HeadForTest();
+        LinkedListNode<T> node = list.head!;
         LinkedListNode<T>? nodeNext = node.Next;
         var result = nodeNext!.Value;
 
@@ -215,10 +215,35 @@ internal class NodeTests
 
             //Act
         bool result = nodeLeft >= nodeRight;
-            
-            //Assert
-            Assert.That(expectedResult, Is.EqualTo(result));
-        }
+        
+        //Assert
+        Assert.That(expectedResult, Is.EqualTo(result));
+    }
+
+    /// <summary>
+    /// Test for GetHashCode.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="node1"></param>
+    /// <param name="node2"></param>
+    /// <param name="expected"></param>
+    [TestCaseSource(nameof(GetHashCode_ReturnsDifferentValuesForDifferentFractions_Data))]
+    [Test]
+    public void GetHashCode_ReturnsDifferentValuesForDifferentFractions<T>(LinkedListNode<T> node1, LinkedListNode<T> node2, bool expected)
+        where T : IComparable<T>
+    {
+        //Arrange
+
+        //Act
+        int result1 = node1.GetHashCode();
+        int result2 = node2.GetHashCode();
+
+        bool resultHash = result1 == result2;
+        
+        //Assert
+        Assert.That(expected, Is.EqualTo(resultHash));
+    }
+
     #region
     private static IEnumerable Contructor_CreateNode_ReturnsNewNode_Data()
         {
@@ -298,12 +323,21 @@ internal class NodeTests
         }
 
     private static IEnumerable OverrideGreaterThanOrEqualThenOperator_TwoNodes_ReturnsTrueIfLeftGreaterOrEqualRight_Data()
-        {
-            yield return new object[] { new LinkedListNode<int>(10), new LinkedListNode<int>(10), true };
-            yield return new object[] { new LinkedListNode<int>(23), new LinkedListNode<int>(10), true };
-            yield return new object[] { new LinkedListNode<int>(8), new LinkedListNode<int>(51), false };
-            yield return new object[] { new LinkedListNode<string>("boo"), new LinkedListNode<string>("nboo"), false };
-            yield return new object[] { new LinkedListNode<string>("boo"), new LinkedListNode<string>("lboo"), false };
-        }
+    {
+        yield return new object[] { new LinkedListNode<int>(10), new LinkedListNode<int>(10), true };
+        yield return new object[] { new LinkedListNode<int>(23), new LinkedListNode<int>(10), true };
+        yield return new object[] { new LinkedListNode<int>(8), new LinkedListNode<int>(51), false };
+        yield return new object[] { new LinkedListNode<string>("boo"), new LinkedListNode<string>("nboo"), false };
+        yield return new object[] { new LinkedListNode<string>("boo"), new LinkedListNode<string>("lboo"), false };
+    }
+
+    private static IEnumerable GetHashCode_ReturnsDifferentValuesForDifferentFractions_Data()
+    {
+        yield return new object[] { new LinkedListNode<int>(10), new LinkedListNode<int>(15), false };
+        yield return new object[] { new LinkedListNode<int>(51), new LinkedListNode<int>(51), true };
+        yield return new object[] { new LinkedListNode<string>("boo"), new LinkedListNode<string>("nboo"), false };
+        yield return new object[] { new LinkedListNode<string>("lboo"), new LinkedListNode<string>("lboo"), true };
+    }
+
     #endregion
 }
