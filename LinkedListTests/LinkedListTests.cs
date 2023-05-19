@@ -505,8 +505,8 @@ public class LinkedListTests
 
             bool flag = false;
 
-            LinkedListNode<TItems> node = list.HeadForTest();
-            LinkedListNode<TItems> nodeCloned = listCloned.HeadForTest();
+            LinkedListNode<TItems> node = list.head!;
+            LinkedListNode<TItems> nodeCloned = listCloned.head!;
 
             while (node is not null)
             {
