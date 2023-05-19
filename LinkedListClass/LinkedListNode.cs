@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("VV.DataStructure.LinkedList.Tests")]
 
 namespace VV.DataStructure.LinkedList;
 
