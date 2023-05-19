@@ -24,7 +24,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     }
 
     /// <summary>
-    /// Create an instance from given IEnumerable collection.
+    /// Creates an instance from given IEnumerable collection.
     /// </summary>
     /// <param name="collection">any IEnumerable collection from which a new LinkedList will be created.</param>
     /// <exception cref="ArgumentNullException">Will be thrown if collection is null.</exception>
@@ -81,7 +81,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <summary>
     /// Finds a value of the element by specified index.
     /// </summary>
-    /// <param name="index"></param>
+    /// <param name="index">the index of the element whose value is to be found</param>
     /// <returns>Returns value of the element corresponding to the specified index.</returns>
     /// <exception cref="ArgumentOutOfRangeException">Index can not be negative or greater than Count-1.</exception>
     public TValue? Get(int index)
@@ -132,8 +132,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <summary>
     /// Updates value of an element at a specified index.
     /// </summary>
-    /// <param name="index"></param>
-    /// <param name="value"></param>
+    /// <param name="index">the index of the element whose value is to be changed</param>
+    /// <param name="value">new value for element</param>
     /// <exception cref="InvalidOperationException">If IsReadOnly is true, you are not allow to change this LinkedList.</exception>
     /// <exception cref="ArgumentOutOfRangeException">Index can not be negative or greater than Count-1.</exception>
     public void Update(int index, TValue value)
