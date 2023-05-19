@@ -5,10 +5,12 @@ using System.Collections;
 
 namespace LinkedListTests;
 
-/// <summary>
-/// Class that contains testing methods for LinkedList functionality.
-/// </summary>
-[TestFixture]
+namespace LinkedListTests
+{
+    /// <summary>
+    /// Class that contains testing methods for LinkedList functionality.
+    /// </summary>
+    [TestFixture]
 internal class NodeTests
 {
         /// <summary>
