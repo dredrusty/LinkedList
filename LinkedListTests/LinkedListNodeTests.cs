@@ -10,7 +10,7 @@ namespace LinkedListTests;
 /// </summary>
 [TestFixture]
 internal class NodeTests
-    {
+{
         /// <summary>
         /// Test for creating the Node.
         /// </summary>
