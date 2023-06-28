@@ -1,9 +1,8 @@
 ﻿using System;
-using VV.DataStructure.LinkedList;
-using NUnit.Framework;
 using System.Collections;
+using NUnit.Framework;
 
-namespace LinkedListTests;
+namespace VV.DataStructure.LinkedList.Tests;
 
 /// <summary>
 /// Class that contains testing methods for LinkedList functionality.
@@ -16,9 +15,9 @@ internal class NodeTests
     /// </summary>
     /// <param name="value"></param>
     /// <param name="expectedResult"></param>
-    [TestCaseSource(nameof(Contructor_CreateNode_ReturnsNewNode_Data))]
+    [TestCaseSource(nameof(Constructor_CreateNode_ReturnsNewNode_Data))]
     [Test]
-    public void Contructor_CreateNode_ReturnsNewNode<T>(T value, T expectedResult)
+    public void Constructor_CreateNode_ReturnsNewNode<T>(T value, T expectedResult)
             where T : IComparable<T>
     {
         //Arrange
@@ -44,8 +43,8 @@ internal class NodeTests
         //Arrange
 
         //Act
-        LinkedListNode<T> node = list.head!;
-        LinkedListNode<T>? nodeNext = node.Next;
+        var node = list.head!;
+        var nodeNext = node.Next;
         var result = nodeNext!.Value;
 
         //Assert
@@ -93,7 +92,7 @@ internal class NodeTests
     }
 
     /// <summary>
-    /// Test for override equality opertor.
+    /// Test for override equality operator.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="nodeLeft"></param>
@@ -114,7 +113,7 @@ internal class NodeTests
     }
 
     /// <summary>
-    /// Test for override inequality opertor.
+    /// Test for override inequality operator.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     /// <param name="nodeLeft"></param>
@@ -243,7 +242,7 @@ internal class NodeTests
     }
 
     #region
-    private static IEnumerable Contructor_CreateNode_ReturnsNewNode_Data()
+    private static IEnumerable Constructor_CreateNode_ReturnsNewNode_Data()
     {
         yield return new object[] { 7, 7 };
         yield return new object[] { 0, 0 };

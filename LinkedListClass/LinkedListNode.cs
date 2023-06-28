@@ -15,7 +15,7 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     public TValue? Value { get; set; }
 
     /// <summary>
-    /// Node thats follow the current one.
+    /// Node that follow the current one.
     /// </summary>
     public LinkedListNode<TValue>? Next { get; set; }
 
@@ -32,20 +32,18 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     /// Determines whether the specified object is equal to the current Node.
     /// </summary>
     /// <param name="obj">the object being compared by value to the current Node</param>
-    /// <returns>true, if the specified object is equal to the current Node; oterwise, false.</returns>
+    /// <returns>true, if the specified object is equal to the current Node; otherwise, false.</returns>
     public override bool Equals(object? obj)
     {
         if (obj is null)
             return false;
         
-        LinkedListNode<TValue> node = (LinkedListNode<TValue>)obj;
+        var node = (LinkedListNode<TValue>)obj;
 
         if (obj is not LinkedListNode<TValue>)
             return false;
 
-            if (Value!.CompareTo(node.Value) == 0)
-                return true;
-            return false;
+        return Value!.CompareTo(node.Value) == 0;
     }
 
     /// <summary>
@@ -63,75 +61,77 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     /// Determines if two Nodes are equal.
     /// </summary>
     /// <param name="node1">the left operand</param>
-    /// <param name="node2">the righr operand</param>
+    /// <param name="node2">the right operand</param>
     /// <returns>true, if Nodes are equal; otherwise, false.</returns>
-    public static bool operator ==(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
+    public static bool operator ==(LinkedListNode<TValue>? node1, LinkedListNode<TValue>? node2)
     {
-        if (node1.Value!.CompareTo(node2.Value) == 0)
-            return true;
-        return false;
+        if (node1 is null || node2 is null)
+            return false;
+        return node1.Value!.CompareTo(node2.Value) == 0;
     }
 
     /// <summary>
-    /// Determines if two Nodes are not eqaul.
+    /// Determines if two Nodes are not equal.
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
     /// <returns>true, if Nodes are not equal; otherwise, false.</returns>
-    public static bool operator !=(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2) =>
-        !(node1 == node2);
+    public static bool operator !=(LinkedListNode<TValue>? node1, LinkedListNode<TValue>? node2)
+    {
+        if (node1 is null || node2 is null)
+            return false;
+        return !(node1 == node2);
+    }
 
     /// <summary>
-    /// Determines if the first Node less than the second one.
+    /// Determines if the left Node less than the right one.
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
     /// <returns>true, if the left Node less than the right one; otherwise, false.</returns>
-    public static bool operator <(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
+    public static bool operator <(LinkedListNode<TValue>? node1, LinkedListNode<TValue>? node2)
     {
-        if (node1.Value!.CompareTo(node2.Value) < 0)
-            return true;
-        return false;
+        if (node1 is null || node2 is null)
+            return false;
+        return node1.Value!.CompareTo(node2.Value) < 0;
     }
 
     /// <summary>
-    /// Determines if the first Node greater than the second one.
+    /// Determines if the left Node greater than the right one.
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
     /// <returns>true, if the left Node greater than the right one; otherwise, false.</returns>
-    public static bool operator >(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
+    public static bool operator >(LinkedListNode<TValue>? node1, LinkedListNode<TValue>? node2)
     {
-        if (node1.Value!.CompareTo(node2.Value) > 0)
-            return true;
-        return false;
+        if (node1 is null || node2 is null)
+            return false;
+        return node1.Value!.CompareTo(node2.Value) > 0;
     }
 
     /// <summary>
-    /// Determines, if the first Node less than or equal to the second one.
+    /// Determines, if the left Node less than or equal to the right one.
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
     /// <returns>true, if the left Node less than or equal to the right one; otherwise, false.</returns>
-    public static bool operator <=(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
+    public static bool operator <=(LinkedListNode<TValue>? node1, LinkedListNode<TValue>? node2)
     {
-        if ((node1.Value!.CompareTo(node2.Value) == 0) ||
-            (node1.Value.CompareTo(node2.Value) < 0))
-            return true;
-        return false;
+        if (node1 is null || node2 is null)
+            return false;
+        return (node1 == node2) || (node1 < node2);
     }
 
     /// <summary>
-    /// Determines, if the first Node greater than or equal to the second one.
+    /// Determines, if the left Node greater than or equal to the right one.
     /// </summary>
     /// <param name="node1">the left operand</param>
     /// <param name="node2">the right operand</param>
     /// <returns>true, if the left Node greater than or equal to the right one; otherwise, false.</returns>
-    public static bool operator >=(LinkedListNode<TValue> node1, LinkedListNode<TValue> node2)
+    public static bool operator >=(LinkedListNode<TValue>? node1, LinkedListNode<TValue>? node2)
     {
-        if ((node1.Value!.CompareTo(node2.Value) == 0) ||
-            (node1.Value.CompareTo(node2.Value) > 0))
-            return true;
-        return false;
+        if (node1 is null || node2 is null)
+            return false;
+        return (node1 == node2) || (node1 > node2);
     }
 }
