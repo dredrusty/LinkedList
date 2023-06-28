@@ -9,6 +9,7 @@ namespace VV.DataStructure.LinkedList;
 /// <summary>
 /// Describes LinkedList data structure, implements CRUD functionality and IList methods.
 /// </summary>
+/// <typeparam name="TValue">Any data type, value or reference, whose values can be contained in a list.</typeparam>
 public class LinkedList<TValue> : IList<TValue>, ICloneable
     where TValue : IComparable<TValue>
 {
@@ -46,9 +47,9 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         get
         {
-            int count = 0;
+            var count = 0;
 
-            LinkedListNode<TValue> node = head!;
+            var node = head!;
 
             while (node is not null)
             {
@@ -75,7 +76,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     public TValue this[int i]
     {
         get => Get(i)!;
-        set => Update(i, value!);
+        set => Update(i, value);
     }
 
     /// <summary>
@@ -88,7 +89,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         var counter = 0;
 
-        LinkedListNode<TValue>? node = head;
+        var node = head;
 
         if (node is null)
             return default;
@@ -115,7 +116,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
         
-        LinkedListNode<TValue>? node = new(item);
+        LinkedListNode<TValue> node = new(item);
 
             if (head is null)
             {
@@ -146,7 +147,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
 
         var counter = 0;
 
-        LinkedListNode<TValue>? node = head;
+        var node = head;
 
         while (counter != index)
         {
@@ -162,17 +163,17 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <returns>A string that represents the current object.</returns>
     public override string ToString()
     {
-        LinkedListNode<TValue>? node = head;
+        var node = head;
         StringBuilder tmp = new();
 
-        foreach (var item in this)
+        foreach (var _ in this)
         {
             tmp.Append(node!.Value);
             tmp.Append(' ');
             node = node.Next;
         }
 
-        string result = tmp.ToString().TrimEnd(' ');
+        var result = tmp.ToString().TrimEnd(' ');
 
         return result;
     }
@@ -183,7 +184,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <returns>an enumerator that can be used to iterate through the collection.</returns>
     public IEnumerator<TValue> GetEnumerator()
     {
-        LinkedListNode<TValue> node = head!;
+        var node = head!;
 
         while (node is not null)
         {
@@ -204,7 +205,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <returns>The index of the item if found in the LinkedList; otherwise, -1.</returns>
     public int IndexOf(TValue item)
     {
-        LinkedListNode<TValue> node = head!;
+        var node = head!;
 
         if (node is null)
         {
@@ -241,8 +242,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         
         LinkedListNode<TValue> node = new(item);
         
-        LinkedListNode<TValue>? current = head;
-        LinkedListNode<TValue>? previuos = null;
+        var current = head;
+        LinkedListNode<TValue>? previous = null;
         
         int counter = 0;
 
@@ -258,13 +259,13 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         {
             while (counter != index)
             {
-                previuos = current;
+                previous = current;
                 current = current!.Next;
 
                 counter++;
             }
 
-            previuos!.Next = node;
+            previous!.Next = node;
             node.Next = current;
         }
     }
@@ -286,26 +287,26 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
 
         else
         {
-            LinkedListNode<TValue>? current = head;
-            LinkedListNode<TValue>? previuos = null;
+            var current = head;
+            LinkedListNode<TValue>? previous = null;
             int counter = 0;
 
             while (counter != index)
             {
-                previuos = current;
+                previous = current;
                 current = current!.Next;
 
                 counter++;
             }
 
-            if (previuos is null)
+            if (previous is null)
             {
                 head = current!.Next;
             }
             else
             {
                 current = current!.Next;
-                previuos.Next = current;
+                previous.Next = current;
             }
         }
     }
@@ -339,7 +340,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <returns>true, if item is found in the LinkedList; otherwise, false.</returns>
     public bool Contains(TValue item)
     {
-        LinkedListNode<TValue>? node = head;
+        var node = head;
 
         for (int i = 0; i < Count; i++)
         {
@@ -355,7 +356,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// </summary>
     /// <param name="array">the array to which the LinkedList is copied</param>
     /// <param name="arrayIndex">index of the array where the first element of LinkedList will be copied</param>
-    /// <exception cref="ArgumentOutOfRangeException">The index cannot be negative or greater than the length of array-1. The number of elements of the copied LinkedList cannot exceed the capacity of the array.</exception>
+    /// <exception cref="ArgumentOutOfRangeException">The index cannot be negative or greater than the length of array-1. 
+    /// The number of elements of the copied LinkedList cannot exceed the capacity of the array.</exception>
     public void CopyTo(TValue[] array, int arrayIndex)
     {
         if ((Count > array.Length - arrayIndex) 
@@ -388,9 +390,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
             
         RemoveAt(IndexOf(item));
             
-        if (count > Count)
-            return true;
-        return false;
+        return count > Count;
     }
 
     /// <summary>
