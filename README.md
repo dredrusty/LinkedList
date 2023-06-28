@@ -1,4 +1,4 @@
-[![NuGet stable version](https://badgen.net/nuget/v/FractionsClass)](https://www.nuget.org/packages/FractionsClass)
+[![NuGet stable version](https://badgen.net/nuget/v/FractionsClass)](https://www.nuget.org/packages/VV.DataStructure.LinkedList/)
 [![Build status](https://dev.azure.com/rustyvik/DataStructures.LinkedList/_apis/build/status/linkedlist.build)](https://dev.azure.com/rustyvik/DataStructures.LinkedList/_build/latest?definitionId=17)
 [![Azure DevOps tests](https://img.shields.io/azure-devops/build/rustyvik/DataStructures.LinkedList/18)](https://dev.azure.com/rustyvik/DataStructures.LinkedList/_build?definitionId=18&branchName=develop)
 
@@ -15,7 +15,7 @@ and
 
 ## Installation
 
-	PM> NuGet\Install-Package FractionsClass -Version 1.0.0-CI-20230301-185104
+	PM> NuGet\Install-Package VV.DataStructure.LinkedList -Version 1.0.0-CI-20230628-185958
     
 
 ## LinkedList&lt;TValue>
