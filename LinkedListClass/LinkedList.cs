@@ -13,15 +13,18 @@ namespace VV.DataStructure.LinkedList;
 public class LinkedList<TValue> : IList<TValue>, ICloneable
     where TValue : IComparable<TValue>
 {
-    internal LinkedListNode<TValue>? head;
+
+    private int _count;
     private LinkedListNode<TValue>? tail;
+    internal LinkedListNode<TValue>? head;
+        
 
     /// <summary>
     /// Default empty constructor.
     /// </summary>
-    public LinkedList() 
+    public LinkedList()
     {
-    
+
     }
 
     /// <summary>
@@ -29,9 +32,9 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// </summary>
     /// <param name="collection">any IEnumerable collection from which a new LinkedList will be created.</param>
     /// <exception cref="ArgumentNullException">Will be thrown if collection is null.</exception>
-    public LinkedList(IEnumerable<TValue> collection) 
+    public LinkedList(IEnumerable<TValue> collection)
     {
-        if (collection is null) 
+        if (collection is null)
             throw new ArgumentNullException(nameof(collection), LinkedListRes.ArgumentNullExceptionText);
         foreach (var item in collection)
         {
@@ -43,29 +46,13 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// Gets the number of elements contained in the LinkedList.
     /// </summary>
     /// <returns>The number of elements contained in the LinkedList.</returns>
-    public int Count
-    {
-        get
-        {
-            var count = 0;
-
-            var node = head!;
-
-            while (node is not null)
-            {
-                node = node.Next!;
-                count++;
-            }
-
-            return count;
-        }
-    }
-
+    public int Count => _count;
+    
     /// <summary>
     /// Gets a value indicating whether the LinkedList is read-only.
     /// </summary>
     /// <returns>true, if the LinkedList is read-only; otherwise, false.</returns>>
-    public bool IsReadOnly 
+    public bool IsReadOnly
         => false;
 
     /// <summary>
@@ -115,19 +102,21 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
-        
+
         LinkedListNode<TValue> node = new(item);
 
-            if (head is null)
-            {
-                head = node;
-                tail = node;
-            }
-            else
-            {
-                tail!.Next = node;
-                tail = node;
-            }
+        if (head is null)
+        {
+            head = node;
+            tail = node;
+        }
+        else
+        {
+            tail!.Next = node;
+            tail = node;
+        }
+
+        _count++;
     }
 
     /// <summary>
@@ -236,16 +225,16 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
-        
-        if(index < 0 || index >= Count)
+
+        if (index < 0 || index >= Count)
             throw new ArgumentOutOfRangeException(nameof(index), LinkedListRes.ArgumentOutOfRangeExceptionText);
-        
+
         LinkedListNode<TValue> node = new(item);
-        
+
         var current = head;
         LinkedListNode<TValue>? previous = null;
-        
-        int counter = 0;
+
+        var counter = 0;
 
         if (index == 0)
         {
@@ -268,6 +257,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
             previous!.Next = node;
             node.Next = current;
         }
+
+        _count++;
     }
 
     /// <summary>
@@ -280,7 +271,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
-        
+
 
         if (index < 0 || index >= Count)
             throw new ArgumentOutOfRangeException(nameof(index), LinkedListRes.ArgumentOutOfRangeExceptionText);
@@ -289,7 +280,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         {
             var current = head;
             LinkedListNode<TValue>? previous = null;
-            int counter = 0;
+            var counter = 0;
 
             while (counter != index)
             {
@@ -309,6 +300,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
                 previous.Next = current;
             }
         }
+
+        _count--;
     }
 
     /// <summary>
@@ -323,13 +316,10 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
 
         if (Count == 0)
             throw new ArgumentOutOfRangeException(LinkedListRes.ArgumentOutOfRangeExceptionClearMethodText);
-        
-        int count = Count;
 
-        while (count != 0)
+        while (Count != 0)
         {
             RemoveAt(0);
-            count--;
         }
     }
 
@@ -346,7 +336,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         {
             if (node!.Value!.Equals(item))
                 return true;
-            node = node.Next;            
+            node = node.Next;
         }
         return false;
     }
@@ -360,15 +350,15 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// The number of elements of the copied LinkedList cannot exceed the capacity of the array.</exception>
     public void CopyTo(TValue[] array, int arrayIndex)
     {
-        if ((Count > array.Length - arrayIndex) 
-            || (arrayIndex < 0) 
+        if ((Count > array.Length - arrayIndex)
+            || (arrayIndex < 0)
             || (arrayIndex >= array.Length))
-            throw new ArgumentOutOfRangeException(LinkedListRes.ArgumentOutOfRangeExceptionCopyToMethodText); 
+            throw new ArgumentOutOfRangeException(LinkedListRes.ArgumentOutOfRangeExceptionCopyToMethodText);
 
-        for (int i = 0; i < Count; i++)
+        for (var i = 0; i < Count; i++)
         {
             array.SetValue(this[i], arrayIndex++);
-        }    
+        }
     }
 
     /// <summary>
@@ -383,14 +373,12 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
 
-        int count = Count;
-
         if (IndexOf(item) < 0)
             return false;
-            
+
         RemoveAt(IndexOf(item));
-            
-        return count > Count;
+
+        return true;
     }
 
     /// <summary>

@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using NUnit.Framework;
 
-namespace VV.DataStructure.LinkedList.Tests;
+namespace VV.DataStructure.LinkedList;
 
     /// <summary>
     /// Class that contains test methods for LinkedList functionality.
@@ -33,9 +33,9 @@ namespace VV.DataStructure.LinkedList.Tests;
         /// Test for new LinkedList(Collection).
         /// </summary>
         /// <param name="array"></param>
-        [TestCaseSource(nameof(ConstructorLinkedList_WhenParametrIsCollection_ReturnsInstance_Data))]
+        [TestCaseSource(nameof(ConstructorLinkedList_WhenParametrIsIEnumerableCollection_ReturnsInstance_Data))]
         [Test]
-        public void ConstructorLinkedList_WhenParametrIsCollection_ReturnsInstance<T>(T[] array)
+        public void ConstructorLinkedList_WhenParametrIsIEnumerableCollection_ReturnsInstance<T>(T[] array)
             where T : IComparable<T>
         {
             //Arrange
@@ -527,7 +527,7 @@ namespace VV.DataStructure.LinkedList.Tests;
             yield return new object[] { new LinkedList<string>() { "dd", "rf", "dfer", "dfd", "dfdss" }, 5 };
         }
 
-        private static IEnumerable ConstructorLinkedList_WhenParametrIsCollection_ReturnsInstance_Data()
+        private static IEnumerable ConstructorLinkedList_WhenParametrIsIEnumerableCollection_ReturnsInstance_Data()
         {
             yield return new object[] { new [] { 1, 2 } };
             yield return new object[] { Array.Empty<int>() };
