@@ -13,12 +13,16 @@ namespace VV.DataStructure.LinkedList;
 public class LinkedList<TValue> : IList<TValue>, ICloneable
     where TValue : IComparable<TValue>
 {
+    public delegate void LinkedListEventHandler(object sender, LinkedListEventArgs<TValue> e);
+    
+    public event LinkedListEventHandler OnInsert;
+    public event LinkedListEventHandler OnRemove;
+    public event LinkedListEventHandler OnUpdate;
 
     private int _count;
     private LinkedListNode<TValue>? tail;
     internal LinkedListNode<TValue>? head;
-        
-
+    
     /// <summary>
     /// Default empty constructor.
     /// </summary>
@@ -144,6 +148,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
             counter++;
         }
         node!.Value = value;
+
+        OnUpdate?.Invoke(this, new LinkedListEventArgs<TValue>($"Value of the node with {index} was changed to {value} "));
     }
 
     /// <summary>
@@ -259,6 +265,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         }
 
         _count++;
+
+        OnInsert?.Invoke(this, new LinkedListEventArgs<TValue>($"New node with value = {item} was inserted at index [{index}]"));
     }
 
     /// <summary>
@@ -370,6 +378,8 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <exception cref="InvalidOperationException">If IsReadOnly is true, you are not allow to change this LinkedList.</exception>
     public bool Remove(TValue item)
     {
+        OnRemove?.Invoke(this, new LinkedListEventArgs<TValue>($"The node with value = {item} was removed"));
+
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
 
