@@ -2,7 +2,7 @@
 using System.Collections;
 using NUnit.Framework;
 
-namespace VV.DataStructure.LinkedList.Tests;
+namespace VV.DataStructure.LinkedList;
 
 /// <summary>
 /// Class that contains testing methods for LinkedList functionality.
