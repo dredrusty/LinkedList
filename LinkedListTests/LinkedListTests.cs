@@ -268,9 +268,9 @@ public class LinkedListTests
     {
         //Arrange
 
-        //Act
-        var exception = Assert.Throws<ArgumentOutOfRangeException>(()
-            => list.Insert(index, value));
+            //Act
+            var exception = Assert.Throws<ArgumentOutOfRangeException>(()
+                => list.Insert(index, value));
 
         //Assert
         Assert.That(exception!.Message, Is.EqualTo("You are trying to get non-existent element. (Parameter 'index')"));
@@ -495,25 +495,25 @@ public class LinkedListTests
             Assert.That(ReferenceEqualsForListsItemsAndClonedListsItems(list, listCloned), Is.False);
         });
 
-        static bool ReferenceEqualsForListsItemsAndClonedListsItems<TItems>(LinkedList<TItems> list, LinkedList<TItems> listCloned)
-            where TItems : IComparable<TItems>
-        {
-            if (list.Count != listCloned.Count)
-                throw new ArgumentOutOfRangeException(nameof(listCloned));
+            static bool ReferenceEqualsForListsItemsAndClonedListsItems<TItems>(LinkedList<TItems> list, LinkedList<TItems> listCloned)
+                where TItems : IComparable<TItems>
+            {
+                if (list.Count != listCloned.Count)
+                    throw new ArgumentOutOfRangeException(nameof(listCloned));
 
             var flag = false;
 
             var node = list.head!;
             var nodeCloned = listCloned.head!;
 
-            while (node is not null)
-            {
-                if (ReferenceEquals(node, nodeCloned))
-                    flag = true;
+                while (node is not null)
+                {
+                    if (ReferenceEquals(node, nodeCloned))
+                        flag = true;
 
-                node = node.Next!;
-                nodeCloned = nodeCloned.Next!;
-            }
+                    node = node.Next!;
+                    nodeCloned = nodeCloned.Next!;
+                }
 
             return flag;
         }
@@ -606,13 +606,13 @@ public class LinkedListTests
         yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 1, " ", " " };
     }
 
-    private static IEnumerable Insert_IncorrectIndex_ThrowsArgumentOutOfRangeException_Data()
-    {
+        private static IEnumerable Insert_IncorrectIndex_ThrowsArgumentOutOfRangeException_Data()
+        {
         yield return new object[] { new LinkedList<int>() { 1, 2 }, -2, -1 };
         yield return new object[] { new LinkedList<int>() { 5, -8, 11, 7 }, 4, 11 };
         yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 }, 8, 15 };
         yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 4, "Bam" };
-    }
+        }
 
     private static IEnumerable RemoveAt_ItemByIndex_ListDoesNotContainItemByIndex_Data()
     {
@@ -681,10 +681,10 @@ public class LinkedListTests
         yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" }, 4 };
     }
 
-    private static IEnumerable Clone_List_NewObjectThatIsCopyOfTheList_Data()
-    {
+        private static IEnumerable Clone_List_NewObjectThatIsCopyOfTheList_Data()
+        {
         yield return new object[] { new LinkedList<int>() { 1, 2, 5, 0, 8 } };
         yield return new object[] { new LinkedList<string>() { "rgrt", "trhty", "DFbee", "8" } };
+        }
+        #endregion
     }
-    #endregion
-}
