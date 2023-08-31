@@ -37,7 +37,7 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
     {
         if (obj is null)
             return false;
-        
+
         var node = (LinkedListNode<TValue>)obj;
 
         if (obj is not LinkedListNode<TValue>)
@@ -54,7 +54,7 @@ internal class LinkedListNode<TValue> : IComparable<LinkedListNode<TValue>>
         HashCode.Combine(Value);
 
     /// <inheritdoc/>
-    public int CompareTo(LinkedListNode<TValue>? other) => 
+    public int CompareTo(LinkedListNode<TValue>? other) =>
         Value!.CompareTo(other!.Value);
 
     /// <summary>

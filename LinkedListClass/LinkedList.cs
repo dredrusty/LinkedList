@@ -7,21 +7,53 @@ using System.Collections.Generic;
 namespace VV.DataStructure.LinkedList;
 
 /// <summary>
-/// Describes LinkedList data structure, implements CRUD functionality and IList methods.
+/// Describes LinkedList data structure, implements CRUD functionality, <see cref="IList"/> methods and 
+/// some events: <see cref="OnElementInsert"/>, <see cref="OnElementRemove"/>, <see cref="OnElementUpdate"/>, <see cref="OnListChanged"/>.
 /// </summary>
-/// <typeparam name="TValue">Any data type, value or reference, whose values can be contained in a list.</typeparam>
+/// <typeparam name="TValue">Any data type, value or reference, whose values can be contained in a LinkedList.</typeparam>
 public class LinkedList<TValue> : IList<TValue>, ICloneable
     where TValue : IComparable<TValue>
 {
-    internal LinkedListNode<TValue>? head;
+    private int _count;
     private LinkedListNode<TValue>? tail;
+    internal LinkedListNode<TValue>? head;
+
+    internal bool IsInvokedBy;
+
+    /// <summary>
+    /// EventHandler delegate.
+    /// </summary>
+    /// <param name="sender">The source of event.</param>
+    /// <param name="e">An object that contains the event data.</param>    
+    public delegate void LinkedListEventHandler(object sender, LinkedListEventArgs<TValue> e);
+
+    /// <summary>
+    /// Event for inserting a node, that calls by <see cref = "Insert"/> and <see cref="Add"/> method.
+    /// </summary>
+    public event LinkedListEventHandler? OnElementInsert;
+
+    /// <summary>
+    /// Event for removing a node, that calls by <see cref = "Remove"/> and <see cref="RemoveAt"/> method.
+    /// </summary>
+    public event LinkedListEventHandler? OnElementRemove;
+
+    /// <summary>
+    /// Event for updating a node, that calls by <see cref = "Update"/> method.
+    /// </summary>
+    public event LinkedListEventHandler? OnElementUpdate;
+
+    /// <summary>
+    /// Event for changing LinkedList, that calls by <see cref="Add"/>, <see cref="Insert"/>, <see cref="Update"/>,
+    /// <see cref="Remove"/>, <see cref="RemoveAt"/> and <see cref="Clear"/>.
+    /// </summary>
+    public event LinkedListEventHandler? OnListChanged;
 
     /// <summary>
     /// Default empty constructor.
     /// </summary>
-    public LinkedList() 
+    public LinkedList()
     {
-    
+
     }
 
     /// <summary>
@@ -29,9 +61,9 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// </summary>
     /// <param name="collection">any IEnumerable collection from which a new LinkedList will be created.</param>
     /// <exception cref="ArgumentNullException">Will be thrown if collection is null.</exception>
-    public LinkedList(IEnumerable<TValue> collection) 
+    public LinkedList(IEnumerable<TValue> collection)
     {
-        if (collection is null) 
+        if (collection is null)
             throw new ArgumentNullException(nameof(collection), LinkedListRes.ArgumentNullExceptionText);
         foreach (var item in collection)
         {
@@ -43,29 +75,13 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// Gets the number of elements contained in the LinkedList.
     /// </summary>
     /// <returns>The number of elements contained in the LinkedList.</returns>
-    public int Count
-    {
-        get
-        {
-            var count = 0;
-
-            var node = head!;
-
-            while (node is not null)
-            {
-                node = node.Next!;
-                count++;
-            }
-
-            return count;
-        }
-    }
+    public int Count => _count;
 
     /// <summary>
     /// Gets a value indicating whether the LinkedList is read-only.
     /// </summary>
     /// <returns>true, if the LinkedList is read-only; otherwise, false.</returns>>
-    public bool IsReadOnly 
+    public bool IsReadOnly
         => false;
 
     /// <summary>
@@ -115,19 +131,26 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
-        
+
         LinkedListNode<TValue> node = new(item);
 
-            if (head is null)
-            {
-                head = node;
-                tail = node;
-            }
-            else
-            {
-                tail!.Next = node;
-                tail = node;
-            }
+        if (head is null)
+        {
+            head = node;
+            tail = node;
+        }
+        else
+        {
+            tail!.Next = node;
+            tail = node;
+        }
+
+        _count++;
+
+        var index = IndexOf(item);
+
+        OnElementInsert?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+        OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
     }
 
     /// <summary>
@@ -155,6 +178,9 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
             counter++;
         }
         node!.Value = value;
+
+        OnElementUpdate?.Invoke(this, new LinkedListEventArgs<TValue>(value, index));
+        OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(value, index));
     }
 
     /// <summary>
@@ -181,7 +207,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// <summary>
     /// Returns an enumerator that iterates through the collection.
     /// </summary>
-    /// <returns>an enumerator that can be used to iterate through the collection.</returns>
+    /// <returns>An enumerator that can be used to iterate through the collection.</returns>
     public IEnumerator<TValue> GetEnumerator()
     {
         var node = head!;
@@ -236,16 +262,16 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
-        
-        if(index < 0 || index >= Count)
+
+        if (index < 0 || index >= Count)
             throw new ArgumentOutOfRangeException(nameof(index), LinkedListRes.ArgumentOutOfRangeExceptionText);
-        
+
         LinkedListNode<TValue> node = new(item);
-        
+
         var current = head;
         LinkedListNode<TValue>? previous = null;
-        
-        int counter = 0;
+
+        var counter = 0;
 
         if (index == 0)
         {
@@ -268,6 +294,11 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
             previous!.Next = node;
             node.Next = current;
         }
+
+        _count++;
+
+        OnElementInsert?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+        OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
     }
 
     /// <summary>
@@ -280,34 +311,41 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     {
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
-        
+
 
         if (index < 0 || index >= Count)
             throw new ArgumentOutOfRangeException(nameof(index), LinkedListRes.ArgumentOutOfRangeExceptionText);
 
+        var item = Get(index);
+
+        var current = head;
+        LinkedListNode<TValue>? previous = null;
+        var counter = 0;
+
+        while (counter != index)
+        {
+            previous = current;
+            current = current!.Next;
+
+            counter++;
+        }
+
+        if (previous is null)
+        {
+            head = current!.Next;
+        }
         else
         {
-            var current = head;
-            LinkedListNode<TValue>? previous = null;
-            int counter = 0;
+            current = current!.Next;
+            previous.Next = current;
+        }
 
-            while (counter != index)
-            {
-                previous = current;
-                current = current!.Next;
+        _count--;
 
-                counter++;
-            }
-
-            if (previous is null)
-            {
-                head = current!.Next;
-            }
-            else
-            {
-                current = current!.Next;
-                previous.Next = current;
-            }
+        if (!IsInvokedBy)
+        {
+            OnElementRemove?.Invoke(this, new LinkedListEventArgs<TValue>(item!, index));
+            OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(item!, index));
         }
     }
 
@@ -323,14 +361,17 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
 
         if (Count == 0)
             throw new ArgumentOutOfRangeException(LinkedListRes.ArgumentOutOfRangeExceptionClearMethodText);
-        
-        int count = Count;
 
-        while (count != 0)
+        IsInvokedBy = true;
+
+        while (Count != 0)
         {
             RemoveAt(0);
-            count--;
         }
+
+        IsInvokedBy = false;
+
+        OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>());
     }
 
     /// <summary>
@@ -346,7 +387,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         {
             if (node!.Value!.Equals(item))
                 return true;
-            node = node.Next;            
+            node = node.Next;
         }
         return false;
     }
@@ -360,15 +401,15 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     /// The number of elements of the copied LinkedList cannot exceed the capacity of the array.</exception>
     public void CopyTo(TValue[] array, int arrayIndex)
     {
-        if ((Count > array.Length - arrayIndex) 
-            || (arrayIndex < 0) 
+        if ((Count > array.Length - arrayIndex)
+            || (arrayIndex < 0)
             || (arrayIndex >= array.Length))
-            throw new ArgumentOutOfRangeException(LinkedListRes.ArgumentOutOfRangeExceptionCopyToMethodText); 
+            throw new ArgumentOutOfRangeException(LinkedListRes.ArgumentOutOfRangeExceptionCopyToMethodText);
 
-        for (int i = 0; i < Count; i++)
+        for (var i = 0; i < Count; i++)
         {
             array.SetValue(this[i], arrayIndex++);
-        }    
+        }
     }
 
     /// <summary>
@@ -383,14 +424,21 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
         if (IsReadOnly)
             throw new InvalidOperationException(LinkedListRes.InvalidOperationExceptionText);
 
-        int count = Count;
+        var index = IndexOf(item);
 
         if (IndexOf(item) < 0)
             return false;
-            
-        RemoveAt(IndexOf(item));
-            
-        return count > Count;
+
+        IsInvokedBy = true;
+
+        RemoveAt(index);
+
+        IsInvokedBy = false;
+
+        OnElementRemove?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+        OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+
+        return true;
     }
 
     /// <summary>

@@ -1,4 +1,4 @@
-[![NuGet stable version](https://badgen.net/nuget/v/FractionsClass)](https://www.nuget.org/packages/VV.DataStructure.LinkedList/)
+[![NuGet stable version](https://badgen.net/nuget/v/VV.DataStructure.LinkedList)](https://www.nuget.org/packages/VV.DataStructure.LinkedList)
 [![Build status](https://dev.azure.com/rustyvik/DataStructures.LinkedList/_apis/build/status/linkedlist.build)](https://dev.azure.com/rustyvik/DataStructures.LinkedList/_build/latest?definitionId=17)
 [![Azure DevOps tests](https://img.shields.io/azure-devops/build/rustyvik/DataStructures.LinkedList/18)](https://dev.azure.com/rustyvik/DataStructures.LinkedList/_build?definitionId=18&branchName=develop)
 
@@ -7,15 +7,15 @@
 
 
 # LinkedList
-This is a C# class library for working with LinkedList data structure.</br>
-And it's represent by two classes: 
-[LinkedList&lt;TValue>](#markdown-header-linkedlisttvalue)
-and
-[LinkedListNode&lt;TValue>](#markdown-header-linkedlistnodetvalue).
+This is a C# class library that describes LinkedList data structure.</br>
+Provides a standard set of operations for working with a linked list, including cloning.</br>
+Implemented IList methods.</br>
+It is also possible to subscribe to events raised by certain operations on an instance of a linked list.</br>
+Comparison operators are implemented for nodes.
 
 ## Installation
 
-	PM> NuGet\Install-Package VV.DataStructure.LinkedList -Version 1.0.0-CI-20230628-185958
+	dotnet add package VV.DataStructure.LinkedList --version 2.0.0-CI-20230830-191441
     
 
 ## LinkedList&lt;TValue>
@@ -100,6 +100,11 @@ Console.WriteLine(list.Count);
 - you can clone the LinkedList and get a new LinkedList instance:</br>
 ```csharp
 LinkedList listCloned = list.Clone();
+```
+- example of events in Add method:</br>
+```csharp
+OnElementInsert?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
 ```
 
 ## LinkedListNode&lt;TValue>
