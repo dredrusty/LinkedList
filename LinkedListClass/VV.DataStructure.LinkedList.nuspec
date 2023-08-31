@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>VV.DataStructures.LinkedList</id>
-    <version></version>
+    <version>2.0.0-CI-20230830-191441</version>
     <authors>Viktar Batvinka</authors>
     <description>This is a C# class library for working with LinkedList data structure.</description>
     <projectUrl>https://bitbucket.org/dredrusty_/dslinkedlist/src/master/</projectUrl>

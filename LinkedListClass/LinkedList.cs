@@ -17,6 +17,7 @@ public class LinkedList<TValue> : IList<TValue>, ICloneable
     private int _count;
     private LinkedListNode<TValue>? tail;
     internal LinkedListNode<TValue>? head;
+
     internal bool IsInvokedBy;
 
     /// <summary>
