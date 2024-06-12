@@ -9,8 +9,8 @@
 # LinkedList
 This is a C# class library that describes LinkedList data structure.</br>
 Provides a standard set of operations for working with a linked list, including cloning.</br>
-Implemented IList methods.</br>
-It is also possible to subscribe to events raised by certain operations on an instance of a linked list.</br>
+Implemented `IList` methods.</br>
+It is also possible to subscribe to events raised by certain operations on an instance of a `LinkedList`.</br>
 Comparison operators are implemented for nodes.
 
 ## Installation
@@ -19,23 +19,31 @@ Comparison operators are implemented for nodes.
     
 
 ## LinkedList&lt;TValue>
-### Examples of using
-There are two ways to create LinkedList:</br>
 
-- create an empty LinkedList:</br>
+To avoid an ambiguous reference between `System.Collections.Generic.LinkedList<T>` and `VV.DataStructure.LinkedList.LinkedList<TValue>` you can use using alias.
+For example, 
 ```csharp
-LinkedList<TValue> list = new() { };
+using MyList = VV.DataStructure.LinkedList;
 ```
 
-- or pass to constructor any IEnumerable&lt;T> collection:</br>
+
+### Examples of using
+There are two ways to create `LinkedList`:</br>
+
+- create an empty `LinkedList`:</br>
+```csharp
+MyList.LinkedList<TValue> list = new();
+```
+
+- or pass to constructor any `IEnumerable<T>` collection:</br>
 ```csharp
 string[] array = new string[2] { "abc", "ABC"};
-LinkedList<string> list = new(array);
+MyList.LinkedList<string> list = new(array);
 ```
 
 Also:
 
-- you can get the number of elements in LinkedList:</br>
+- you can get the number of elements in `LinkedList`:</br>
 ```csharp
 Console.WriteLine(list.Count);
 //returns 2
@@ -45,7 +53,7 @@ Console.WriteLine(list.Count);
 list.Get(0);
 //returns abc
 ```
-- you can manually fill the list. Every element will be added in th end of the LinkedList:</br>
+- you can manually fill the list. Every element will be added in th end of the `LinkedList`:</br>
 ```csharp
 list.Add("qwerty");
 list.Add("QWERTY");
@@ -60,51 +68,73 @@ foreach(string item in list)
 Console.WriteLine(item);
 //returns abc ABC ytrewq QWERTY
 ```
-- you can get an index of a specific element of the LinkedList:</br>
+- you can get an index of a specific element of the `LinkedList`:</br>
 ```csharp
 list.IndexOf(0);
 //returns abc
 list.IndexOf(10);
 //returns -1
 ```
-- you can insert an item to the LinkedList at the specified index:</br>
+- you can insert an item to the `LinkedList` at the specified index:</br>
 ```csharp
 list.Insert(1, "boom");
 ```
-- you can delete an item from the LinkedList at the specified index:</br>
+- you can delete an item from the `LinkedList` at the specified index:</br>
 ```csharp
 list.RemoveAt(2);
 ```
-- you can determine whether the LinkedList contains a specific value:</br>
+- you can determine whether the `LinkedList` contains a specific value:</br>
 ```csharp
 list.Contains("QWERTY");
 //returns true
 ```
-- you can сopy the elements of the LinkedList to an Array, starting at a particular Array index:</br>
+- you can сopy the elements of the `LinkedList` to an array, starting at a particular array index:</br>
 ```csharp
 string [] array = new[7];
 list.CopyTo(array, 0);
 //returns abc boom ytrewq QWERTY null null null
 ```
-- you can remove the first occurrence of the specified item from the LinkedList:</br>
+- you can remove the first occurrence of the specified item from the `LinkedList`:</br>
 ```csharp
 list.Remove("boom");
 //returns true
 ```
-- you can clear the LinkedList:</br>
+- you can clear the `LinkedList`:</br>
 ```csharp
 list.Clear();
 Console.WriteLine(list.Count);
 //returns 0
 ```
-- you can clone the LinkedList and get a new LinkedList instance:</br>
+- you can clone the LinkedList and get a new `LinkedList` instance:</br>
 ```csharp
-LinkedList listCloned = list.Clone();
+MyList.LinkedList listCloned = list.Clone();
 ```
-- example of events in Add method:</br>
+
+### Events
+
+There are 4 type of events implemented:
+- OnElementInsert.
+- OnElementRemove.
+- OnElementUpdate.
+- OnListChanged.
+
+**Example of using:**
 ```csharp
-OnElementInsert?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
-OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+list.Add (10);
+list.Add (20);
+list.Add (30);
+
+void PrintDetails (object sender, LinkedListEventArgs<int> e)
+{
+    Console.WriteLine($"Item {e.Value} + was inserted at index {e.Index} + by {e.TriggerMethod} method.");
+}
+
+list.OnElementInsert += PrintDetails;
+
+list.Insert(1, 40);
+
+///Output
+Item 40 + was inserted at index 1 + by Insert method.
 ```
 
 ## LinkedListNode&lt;TValue>
