@@ -105,10 +105,10 @@ list.Clear();
 Console.WriteLine(list.Count);
 //returns 0
 ```
-- you can clone the LinkedList and get a new `LinkedList` instance:</br>
+- you can clone the `LinkedList` and get a new `LinkedList` instance:</br>
 ```csharp
 MyList.LinkedList listCloned = list.Clone();
-```
+
 
 ### Events
 
@@ -136,10 +136,32 @@ list.Insert(1, 40);
 ///Output
 Item 40 + was inserted at index 1 + by Insert method.
 ```
-- example of events in Add method:</br>
+
+### Events
+
+There are 4 type of events implemented:
+- OnElementInsert.
+- OnElementRemove.
+- OnElementUpdate.
+- OnListChanged.
+
+**Example of using:**
 ```csharp
-OnElementInsert?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
-OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+list.Add (10);
+list.Add (20);
+list.Add (30);
+
+void PrintDetails (object sender, LinkedListEventArgs<int> e)
+{
+    Console.WriteLine($"Item {e.Value} + was inserted at index {e.Index} + by {e.TriggerMethod} method.");
+}
+
+list.OnElementInsert += PrintDetails;
+
+list.Insert(1, 40);
+
+///Output
+Item 40 + was inserted at index 1 + by Insert method.
 ```
 
 ## LinkedListNode&lt;TValue>
