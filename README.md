@@ -136,6 +136,11 @@ list.Insert(1, 40);
 ///Output
 Item 40 + was inserted at index 1 + by Insert method.
 ```
+- example of events in Add method:</br>
+```csharp
+OnElementInsert?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+OnListChanged?.Invoke(this, new LinkedListEventArgs<TValue>(item, index));
+```
 
 ## LinkedListNode&lt;TValue>
 ### Examples of using
